@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Predictor</title>
+    <style>
+       
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+            
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label, input, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <p> My Name is Yash Jha . Roll No 22053127</p>
+    <form id="priceForm">
+        <h2>House Price Predictor</h2>
+        <label for="area">Enter Area (in square feet):</label>
+        <input type="number" id="area" name="area" required>
+        <button type="submit">Predict</button>
+    </form>
+    <div class="result" id="result"></div>
+    <script>
+        document.getElementById('priceForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            const area = document.getElementById('area').value;
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `area=${area}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = `Predicted Price: $${data.predicted_price}`;
+            })
+            .catch(error => {
+                document.getElementById('result').textContent = 'Error predicting price. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>
